@@ -37,9 +37,9 @@ const contactsSlice = createSlice({
     },
 
     deleteContacts(state, action) {
-      state.items = state.items.filter(contact => {
+      return (state.items = state.items.filter(contact => {
         return contact.id !== action.payload;
-      });
+      }));
     },
     changeFilterValue(state, action) {
       state.filter = action.payload;
