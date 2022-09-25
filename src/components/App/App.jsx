@@ -56,7 +56,6 @@ export default function App() {
         py={0}
         display="flex"
         flexDirection="column"
-        // alignItems='center'
         width={450}
         as="section"
       >
@@ -64,11 +63,7 @@ export default function App() {
         {contacts.length > 0 ? (
           <>
             <Filter name="filter" />
-            <ContactList
-            // contacts={getVisibleContacts()}
-            // contacts={contacts}
-            // onDelContact={onDelContact}
-            />
+            <ContactList />
           </>
         ) : (
           <Notification message="There are no contacts" />

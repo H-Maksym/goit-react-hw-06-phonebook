@@ -4,7 +4,7 @@ import { StyledFilterLabel, StyledFilterInput } from './Filter.styled';
 import ButtonIcon from 'components/PhoneBook/ButtonIcon';
 import { BsSearch } from 'react-icons/bs';
 import Box from 'components/PhoneBook/Box';
-import { changeFilterValue } from 'redux/action';
+import { changeFilterValue } from 'redux/slice/contactsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFilterValue } from 'redux/selectors';
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from 'components/PhoneBook/Button';
 import { StyledTextList } from './ContactItem.styled';
 import { useDispatch } from 'react-redux';
-import { deleteContacts } from 'redux/action';
+import { deleteContacts } from 'redux/slice/contactsSlice';
 
 export default function ContactItem({ contact }) {
   const dispatch = useDispatch();
