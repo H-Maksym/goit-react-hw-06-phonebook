@@ -1,42 +1,37 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
-
 import { FormContact } from './ContactForm.styled';
+
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { notifyConfigs } from 'config/notifyConfig';
 
 import Input from 'components/PhoneBook/Input';
 import Button from 'components/PhoneBook/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContacts } from 'redux/action';
+import { getContacts } from 'redux/selectors';
 
-export default function ContactForm({ title, onSubmit }) {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+export default function ContactForm({ title }) {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
 
-  function handleInputChange(e) {
-    const { name, value } = e.currentTarget;
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        return;
-    }
+  /** checks if a contact exists in contacts list*/
+  function existContact(name) {
+    return contacts.find(
+      data => data.name.toLowerCase() === name.toLowerCase()
+    );
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    onSubmit({ name, number });
-    reset();
-    // if (!(name && number)) {
-    //   console.log('Enter your contact information');
-    //   return;
-    // }
-  }
+    const form = e.target;
+    const name = form.elements.name.value.trim();
+    if (existContact(name)) {
+      return Notify.info('Such a contact already exists', notifyConfigs);
+    }
+    const number = form.elements.number.value.trim();
+    dispatch(addContacts(name, number));
 
-  function reset() {
-    setName('');
-    setNumber('');
+    form.reset();
   }
 
   return (
@@ -46,8 +41,7 @@ export default function ContactForm({ title, onSubmit }) {
         type="text"
         titleInput="name"
         name="name"
-        value={name}
-        handleInputChange={handleInputChange}
+        placeholder="Enter your name"
         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
       />
@@ -55,8 +49,7 @@ export default function ContactForm({ title, onSubmit }) {
         type="tel"
         titleInput="number"
         name="number"
-        value={number}
-        handleInputChange={handleInputChange}
+        placeholder="Enter your number"
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
       />

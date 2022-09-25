@@ -3,12 +3,22 @@ import PropTypes from 'prop-types';
 import { StyledFilterLabel, StyledFilterInput } from './Filter.styled';
 import ButtonIcon from 'components/PhoneBook/ButtonIcon';
 import { BsSearch } from 'react-icons/bs';
-
 import Box from 'components/PhoneBook/Box';
+import { changeFilterValue } from 'redux/action';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFilterValue } from 'redux/selectors';
 
-export default function Filter({ title = '', name, value, changeFilter }) {
+export default function Filter({ title = '', name }) {
   // !The form also has its own event response logic.
   // !If we have a form submit and input event, then to control the form, we must separately make an event handler on the form.
+  const value = useSelector(getFilterValue);
+  const dispatch = useDispatch();
+
+  function changeFilter(e) {
+    e.preventDefault();
+    const filterValue = e.currentTarget.value.trim();
+    dispatch(changeFilterValue(filterValue));
+  }
 
   return (
     <form onSubmit={e => e.preventDefault()}>
